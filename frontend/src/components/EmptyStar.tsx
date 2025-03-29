@@ -1,4 +1,4 @@
-const EmptyStar = ({ size = 5 }: { size?: number }) => (
+const EmptyStar = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"

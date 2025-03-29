@@ -1,5 +1,3 @@
-import React from "react";
-
 const openingHours = {
   Hétfő: "08:00 - 18:00",
   Kedd: "08:00 - 18:00",

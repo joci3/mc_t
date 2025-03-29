@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { ReviewForm } from "../components/Review/ReviewForm";
 import ReviewList from "../components/Review/ReviewList";
 import { StoreInfo } from "../components/StoreInfo";
-import { OpeningHours } from "../components/OpeningHours";
 
 const URL = "http://localhost:5000";
 const STORE_ID = "67e82021f543686ff871b5e5";

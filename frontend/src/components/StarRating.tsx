@@ -24,11 +24,7 @@ const StarRating = ({ ...props }) => {
           onMouseEnter={() => setHover(index + 1)}
           onMouseLeave={() => setHover(0)}
         >
-          {index < (hover || rating) ? (
-            <FilledStar size={6} />
-          ) : (
-            <EmptyStar size={6} />
-          )}
+          {index < (hover || rating) ? <FilledStar size={6} /> : <EmptyStar />}
         </button>
       ))}
     </div>
