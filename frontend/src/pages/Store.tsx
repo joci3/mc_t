@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import { ReviewForm } from "../components/Review/ReviewForm";
 import ReviewList from "../components/Review/ReviewList";
 import { StoreInfo } from "../components/StoreInfo";
+import { OpeningHours } from "../components/OpeningHours";
 
 const URL = "http://localhost:5000";
+const STORE_ID = "67e82021f543686ff871b5e5";
 
 export interface FormProps {
   isAddReviewEnabled?: boolean;
   handleIsAddReviewEnabled: () => void;
   refresh: () => void;
+  storeId: string | undefined;
 }
 
 export interface StoreResponse {
@@ -28,7 +31,7 @@ export interface ReviewResponse {
 
 export default function Store() {
   const [isAddReviewEnabled, setIsAddReviewEnabled] = useState<boolean>(false);
-  const [storeData, setStoreData] = useState<StoreResponse | null>(null);
+  const [storeData, setStoreData] = useState<StoreResponse>();
   const [reviews, setReviews] = useState<ReviewResponse[]>([]);
 
   const numberOfReviews = reviews.length;
@@ -41,29 +44,24 @@ export default function Store() {
     setIsAddReviewEnabled(!isAddReviewEnabled);
 
   useEffect(() => {
-    fetchStore();
+    refetchAll();
   }, []);
 
-  useEffect(() => {
-    if (storeData) {
-      fetchReviews();
-    }
-  }, [storeData]);
-
   const fetchStore = async () => {
-    const response = await fetch(`${URL}/stores/67e67fefbe5e1913f1f25fe3`);
+    const response = await fetch(`${URL}/stores/${STORE_ID}`);
     if (!response.ok) {
       console.error(response.statusText);
-      return;
-    } else {
-      const store = await response.json();
-      setStoreData(store);
+      return null;
     }
+    const store = await response.json();
+    setStoreData(store);
+    return store;
   };
 
-  const fetchReviews = async () => {
-    const response = await fetch(`${URL}/reviews/`);
+  const fetchReviews = async (storeId: string | undefined) => {
+    const response = await fetch(`${URL}/reviews/${storeId}`);
     if (!response.ok) {
+      console.error(response.statusText);
       return;
     }
     const reviewsData: ReviewResponse[] = await response.json();
@@ -71,8 +69,8 @@ export default function Store() {
   };
 
   const refetchAll = async () => {
-    await fetchStore();
-    await fetchReviews();
+    const store = await fetchStore();
+    await fetchReviews(store._id);
   };
 
   return (
@@ -86,6 +84,7 @@ export default function Store() {
         isAddReviewEnabled={isAddReviewEnabled}
         handleIsAddReviewEnabled={handleIsAddReviewEnabled}
         refresh={refetchAll}
+        storeId={storeData?._id}
       />
       <ReviewList
         handleIsAddReviewEnabled={handleIsAddReviewEnabled}

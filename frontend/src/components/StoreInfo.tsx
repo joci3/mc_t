@@ -4,7 +4,7 @@ import FilledStar from "./FilledStar";
 import { StoreResponse } from "../pages/Store";
 
 interface StoreInfoProps {
-  storeData: StoreResponse | null;
+  storeData: StoreResponse | undefined;
   avgRating: number;
   numberOfReviews: number;
 }
@@ -31,7 +31,7 @@ export const StoreInfo: React.FC<StoreInfoProps> = ({
           </div>
 
           <div className="flex-1 ml-3 px-6 sm:px-0">
-            <OpeningHours />
+            <OpeningHours openingHours={storeData?.opening_hours} />
           </div>
         </div>
         <div className="pt-3 flex justify-between font-light italic border-t-1 border-dashed border-gray-300">
